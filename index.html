@@ -8,66 +8,69 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
 
 <style>
+/* ===== BASE ===== */
 html, body {
     width: 100%;
     height: 100%;
+    margin: 0;
 }
 
 body {
-    margin: 0;
-    overflow: hidden;
-    background-image: url("bg.jpeg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background: url("bg.jpeg") center center / cover no-repeat;
     display: flex;
     justify-content: center;
     align-items: center;
     font-family: 'Playfair Display', serif;
+    overflow: hidden;
     position: relative;
 }
 
-/* Overlay */
+/* Dark overlay */
 body::before {
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.25);
+    background: rgba(0,0,0,0.25);
     z-index: 0;
 }
 
-/* Card */
+/* ===== CARD ===== */
 .card {
-    .card {
     position: relative;
     z-index: 1;
     background: transparent;
     padding: 40px 55px;
-    border-radius: 20px;
     text-align: center;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.4);
     max-width: 650px;
+}
+
+/* FIXED TEXT (NEVER MOVES) */
+.card h1,
+.card p {
+    position: static;
+    transform: none;
 }
 
 h1 {
     font-family: 'Great Vibes', cursive;
     font-size: 3rem;
-    color: #5a2a2a;
+    color: #ffffff;
 }
 
 p {
     font-size: 1.4rem;
-    color: #3b2a1a;
+    color: #ffffff;
 }
 
-/* Buttons */
+/* ===== BUTTON AREA ===== */
 .buttons {
     margin-top: 40px;
     position: relative;
-    height: 200px;
     width: 100%;
+    height: 160px;
 }
 
+/* Buttons */
 button {
     padding: 14px 32px;
     font-size: 18px;
@@ -78,33 +81,38 @@ button {
     font-family: 'Playfair Display', serif;
 }
 
+/* YES = FIXED */
 #yes {
     background: #8b1e3f;
     color: white;
-    left: 35%;
-    top: 90px;
+    left: 50%;
+    top: 60px;
+    transform: translateX(-50%);
 }
 
+/* NO = MOVES ONLY INSIDE BUTTON BOX */
 #no {
     background: #555;
     color: white;
-    left: 55%;
-    top: 90px;
+    left: 65%;
+    top: 60px;
 }
 
+/* Message */
 .message {
-    margin-top: 25px;
+    margin-top: 20px;
     font-size: 2rem;
-    color: #6b1d1d;
+    color: #ffd6d6;
     font-family: 'Great Vibes', cursive;
 }
 
-/* Floating hearts */
+/* ===== FLOATING HEARTS ===== */
 .heart {
     position: absolute;
     color: rgba(255, 200, 200, 0.8);
     font-size: 22px;
     animation: float 6s linear infinite;
+    z-index: 0;
 }
 
 @keyframes float {
@@ -127,7 +135,6 @@ button {
     <source src="love.mp3" type="audio/mpeg">
 </audio>
 
-
 <div class="card">
     <h1>My Dearest ❤️</h1>
     <p>
@@ -144,12 +151,8 @@ button {
 </div>
 
 <script>
-const noBtn = document.getElementById("no");
-const yesBtn = document.getElementById("yes");
-const msg = document.getElementById("msg");
+/* ===== MUSIC (Browser Safe) ===== */
 const music = document.getElementById("bgMusic");
-
-/* Autoplay music on load */
 document.addEventListener("click", () => {
     if (music.paused) {
         music.volume = 0.6;
@@ -157,47 +160,10 @@ document.addEventListener("click", () => {
     }
 }, { once: true });
 
-/* Move "No" button continuously */
+/* ===== NO BUTTON MOVEMENT (CONFINED) ===== */
+const noBtn = document.getElementById("no");
+const container = document.querySelector(".buttons");
+
 function moveNoButton() {
-    const container = document.querySelector(".buttons");
-
-    const maxX = container.offsetWidth - noBtn.offsetWidth;
-    const maxY = container.offsetHeight - noBtn.offsetHeight;
-
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
-
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
-}
-
-setInterval(moveNoButton, 1000);
-noBtn.addEventListener("mouseover", moveNoButton);
-
-/* Yes button click */
-yesBtn.addEventListener("click", () => {
-    msg.innerHTML = "Forever & Always ❤️";
-});
-
-/* Floating hearts animation */
-setInterval(() => {
-    const heart = document.createElement("div");
-    heart.classList.add("heart");
-    heart.innerHTML = "❤️";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
-    document.body.appendChild(heart);
-
-    setTimeout(() => heart.remove(), 6000);
-}, 400);
-</script>
-
-</body>
-</html>
-
-
-
-
-
-
-
+    const maxX = container.clientWidth - noBtn.offsetWidth;
+    co
