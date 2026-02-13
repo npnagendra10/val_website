@@ -8,11 +8,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
 
 <style>
-/* ===== BASE ===== */
 html, body {
-    width: 100%;
-    height: 100%;
     margin: 0;
+    height: 100%;
 }
 
 body {
@@ -34,40 +32,25 @@ body::before {
     z-index: 0;
 }
 
-/* ===== CARD ===== */
+/* Card */
 .card {
     position: relative;
     z-index: 1;
-    background: transparent;
-    padding: 40px 55px;
     text-align: center;
-    max-width: 650px;
+    padding: 40px 60px;
 }
 
-/* FIXED TEXT (NEVER MOVES) */
-.card h1,
-.card p {
-    position: static;
-    transform: none;
-}
-
+/* Text fixed */
 h1 {
     font-family: 'Great Vibes', cursive;
     font-size: 3rem;
-    color: #ffffff;
+    color: white;
+    margin-bottom: 10px;
 }
 
 p {
     font-size: 1.4rem;
-    color: #ffffff;
-}
-
-/* ===== BUTTON AREA ===== */
-.buttons {
-    margin-top: 40px;
-    position: relative;
-    width: 100%;
-    height: 160px;
+    color: white;
 }
 
 /* Buttons */
@@ -81,21 +64,23 @@ button {
     font-family: 'Playfair Display', serif;
 }
 
-/* YES = FIXED */
+/* YES fixed in center */
 #yes {
     background: #8b1e3f;
     color: white;
     left: 50%;
-    top: 60px;
-    transform: translateX(-50%);
+    top: 60%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
 }
 
-/* NO = MOVES ONLY INSIDE BUTTON BOX */
+/* NO will move around entire screen */
 #no {
     background: #555;
     color: white;
-    left: 65%;
-    top: 60px;
+    left: 70%;
+    top: 60%;
+    z-index: 2;
 }
 
 /* Message */
@@ -106,7 +91,7 @@ button {
     font-family: 'Great Vibes', cursive;
 }
 
-/* ===== FLOATING HEARTS ===== */
+/* Floating hearts */
 .heart {
     position: absolute;
     color: rgba(255, 200, 200, 0.8);
@@ -130,7 +115,6 @@ button {
 
 <body>
 
-<!-- 🎵 Background Music -->
 <audio id="bgMusic" loop>
     <source src="love.mp3" type="audio/mpeg">
 </audio>
@@ -141,18 +125,19 @@ button {
         Will you be my Valentine  
         <br>for the rest of the years?
     </p>
-
-    <div class="buttons">
-        <button id="yes">Yes 💕</button>
-        <button id="no">No 💔</button>
-    </div>
-
     <div class="message" id="msg"></div>
 </div>
 
+<button id="yes">Yes 💕</button>
+<button id="no">No 💔</button>
+
 <script>
-/* ===== MUSIC (Browser Safe) ===== */
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+const msg = document.getElementById("msg");
 const music = document.getElementById("bgMusic");
+
+/* Play music on first click (browser policy) */
 document.addEventListener("click", () => {
     if (music.paused) {
         music.volume = 0.6;
@@ -160,10 +145,37 @@ document.addEventListener("click", () => {
     }
 }, { once: true });
 
-/* ===== NO BUTTON MOVEMENT (CONFINED) ===== */
-const noBtn = document.getElementById("no");
-const container = document.querySelector(".buttons");
-
+/* NO button moves across whole screen */
 function moveNoButton() {
-    const maxX = container.clientWidth - noBtn.offsetWidth;
-    co
+    const maxX = window.innerWidth - noBtn.offsetWidth;
+    const maxY = window.innerHeight - noBtn.offsetHeight;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+}
+
+setInterval(moveNoButton, 900);
+noBtn.addEventListener("mouseover", moveNoButton);
+
+/* YES click */
+yesBtn.addEventListener("click", () => {
+    msg.innerHTML = "Forever & Always ❤️";
+});
+
+/* Floating hearts */
+setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+}, 450);
+</script>
+
+</body>
+</html>
