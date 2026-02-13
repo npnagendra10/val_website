@@ -64,7 +64,8 @@ p {
 .buttons {
     margin-top: 40px;
     position: relative;
-    height: 220px;
+    height: 200px;
+    width: 100%;
 }
 
 button {
@@ -158,8 +159,10 @@ document.addEventListener("click", () => {
 
 /* Move "No" button continuously */
 function moveNoButton() {
-    const maxX = window.innerWidth - noBtn.offsetWidth;
-    const maxY = window.innerHeight - noBtn.offsetHeight;
+    const container = document.querySelector(".buttons");
+
+    const maxX = container.offsetWidth - noBtn.offsetWidth;
+    const maxY = container.offsetHeight - noBtn.offsetHeight;
 
     const x = Math.random() * maxX;
     const y = Math.random() * maxY;
@@ -191,6 +194,7 @@ setInterval(() => {
 
 </body>
 </html>
+
 
 
 
